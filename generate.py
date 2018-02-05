@@ -133,7 +133,7 @@ def generate_int_value(_id, rand):
 def generate_float_value(rand):
     """
     Generate data for FLOAT VALUE
-    
+
     :param rand: Random float number
     :return: FLOAT_VALUE value
     """
