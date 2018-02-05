@@ -23,8 +23,12 @@ class DbManager(object):
 
     # Save changes to database
     def commit(self):
-        if self.is_active():
-            self.__connection.commit()
+        try:
+            if self.is_active():
+                self.__connection.commit()
+        except self.__driver.DatabaseError as err:
+            print("Error: " + str(err))
+            return False
 
     # Connect to database
     def __enter__(self):
