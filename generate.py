@@ -4,10 +4,9 @@ import datetime
 import random
 import sqlite3
 import string
-from argparse import ArgumentParser
-
 import common
 from db_api import DbManager
+from argparse import ArgumentParser
 
 
 def populate_argparser(argparser):
@@ -63,94 +62,114 @@ def generate_datelist(now):
     return dates
 
 
-def generate_load_date(dates):
+def randomize_int_number(start_value, finish_value):
+    """
+    Randomize int number in range
+
+    :param start_value: Start value of range
+    :param finish_value: Finish value of range
+    :return: Random int number
+    """
+    return random.randint(start_value, finish_value)
+
+
+def randomize_float_number():
+    """
+    Randomize float number
+
+    :return: Random float number
+    """
+    return random.random()
+
+
+def generate_load_date(dates, rand):
     """
     Generate load_date
 
     :param dates: List with dates
+    :param rand: Random int number
     :return: LOAD_DATE value
     """
-    j = random.randint(0, len(dates))
-    if j == len(dates):
+    if rand == len(dates):
         load_date = None
     else:
-        load_date = dates[j]
+        load_date = dates[rand]
     return load_date
 
 
-def generate_id():
+def generate_id(rand):
     """
     Generate data for ID
 
+    :param rand: Random int number
     :return: ID value
     """
-    j = random.randint(-1, 10000)
-    if j < 100:
+    if rand < 100:
         _id = None
     else:
-        _id = j
+        _id = rand
     return _id
 
 
-def generate_int_value(_id):
+def generate_int_value(_id, rand):
     """
     Generate data for INT_VALUE
 
     :param _id: ID value
+    :param rand: Random int number
     :return: INT_VALUE value
     """
-    j = random.randint(-1, 10000)
-    if j == 0:
-        int_value = j
-    elif j < 100:
+    if rand == 0:
+        int_value = rand
+    elif rand < 100:
         int_value = None
-    elif j < 200:
+    elif rand < 200:
         int_value = _id
     else:
-        int_value = j
+        int_value = rand
     return int_value
 
 
-def generate_float_value():
+def generate_float_value(rand):
     """
     Generate data for FLOAT VALUE
-
+    
+    :param rand: Random float number
     :return: FLOAT_VALUE value
     """
-    j = random.random()
-    if j < 0.05:
+    if rand < 0.05:
         float_value = None
     else:
-        float_value = j
+        float_value = rand
     return float_value
 
 
-def generate_char_value():
+def generate_char_value(rand):
     """
     Generate data for CHAR_VALUE
 
+    :param rand: Random int number
     :return: CHAR_VALUE value
     """
-    j = random.randint(-1, 10)
-    if j == -1:
+    if rand == -1:
         char_value = None
     else:
-        char_value = ''.join(random.choice(string.ascii_uppercase) for _ in range(j))
+        char_value = ''.join(random.choice(string.ascii_uppercase) for _ in range(rand))
     return char_value
 
 
-def generate_date_value(dates):
+def generate_date_value(dates, rand):
     """
     Generate data for DATE_VALUE
 
     :param dates: List with dates
+    :param rand: Random int number
     :return: DATE_VALUE value
     """
-    j = random.randint(0, len(dates))
-    if j == len(dates):
+    if rand == len(dates):
         date_value = None
     else:
-        date_value = dates[j]
+        date_value = dates[rand]
     return date_value
 
 
@@ -190,9 +209,13 @@ def generate_data_and_insert_in_db(args, dates, db):
     :param db: DbManager object
     """
     for i in range(0, args.count):
-        _id = generate_id()
-        insert_data_in_db(i, db, generate_load_date(dates), _id, generate_int_value(_id),
-                          generate_float_value(), generate_char_value(), generate_date_value(dates))
+        load_date = generate_load_date(dates, randomize_int_number(0, len(dates)))
+        _id = generate_id(randomize_int_number(-1, 10000))
+        int_value = generate_int_value(_id, randomize_int_number(-1, 10000))
+        float_value = generate_float_value(randomize_float_number())
+        char_value = generate_char_value(randomize_int_number(-1, 10))
+        date_value = generate_date_value(dates, randomize_int_number(0, len(dates)))
+        insert_data_in_db(i, db, load_date, _id, int_value, float_value, char_value, date_value)
     db.commit()
 
 
