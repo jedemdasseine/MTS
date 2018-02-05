@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from argparse import ArgumentParser
+import datetime
 import random
 import sqlite3
-from db_api import DbManager
-import datetime
-import common
 import string
+from argparse import ArgumentParser
+
+from Project import common
+from Project.db_api import DbManager
 
 
 def populate_argparser(argparser):
@@ -38,7 +39,7 @@ def create_db(db):
     """
     Create db and table
 
-    :param db:  DbManager object
+    :param db: DbManager object
     """
     if not db.execute('CREATE TABLE IF NOT EXISTS {0} ({1} {2}, {3} {4}, {5} {6}, {7} {8}, {9} {10}, {11} {12})'.
                       format(common.CHECK_OBJECT_TABLE, common.COT_LOAD_DATE_COL, common.COT_LOAD_DATE_TYPE,

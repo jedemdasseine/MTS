@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import common
+from Project import common
 
 
 class DbManager(object):
