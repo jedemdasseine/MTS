@@ -6,8 +6,8 @@ import sqlite3
 import string
 from argparse import ArgumentParser
 
-from Project import common
-from Project.db_api import DbManager
+import common
+from db_api import DbManager
 
 
 def populate_argparser(argparser):
