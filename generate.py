@@ -34,7 +34,7 @@ def populate_argparser(argparser):
     )
 
 
-def create_db(db):
+def create_table(db):
     """
     Create db and table
 
@@ -173,18 +173,13 @@ def generate_date_value(dates, rand):
     return date_value
 
 
-def insert_data_in_db(i, db, load_date, _id, int_value, float_value, char_value, date_value):
+def insert_data_in_db(i, db, result_data_list):
     """
     Insert generated data in database
 
     :param i: iterator value
     :param db: DbManager object
-    :param load_date: LOAD_DATE value
-    :param _id: ID value
-    :param int_value: INT_VALUE value
-    :param float_value: FLOAT_VALUE value
-    :param char_value: CHAR_VALUE value
-    :param date_value: DATE_VALUE value
+    :param result_data_list: List with data
     """
 
     # Starting new SQL transaction after some rows
@@ -197,7 +192,8 @@ def insert_data_in_db(i, db, load_date, _id, int_value, float_value, char_value,
                format(common.CHECK_OBJECT_TABLE, common.COT_LOAD_DATE_COL, common.COT_ID_COL,
                       common.COT_INT_COL, common.COT_FLOAT_COL, common.COT_CHAR_COL,
                       common.COT_DATE_COL),
-               (load_date, _id, int_value, float_value, char_value, date_value))
+               (result_data_list[0], result_data_list[1], result_data_list[2],
+                result_data_list[3], result_data_list[4], result_data_list[5]))
 
 
 def generate_data_and_insert_in_db(args, dates, db):
@@ -209,13 +205,13 @@ def generate_data_and_insert_in_db(args, dates, db):
     :param db: DbManager object
     """
     for i in range(0, args.count):
-        load_date = generate_load_date(dates, randomize_int_number(0, len(dates)))
         _id = generate_id(randomize_int_number(-1, 10000))
-        int_value = generate_int_value(_id, randomize_int_number(-1, 10000))
-        float_value = generate_float_value(randomize_float_number())
-        char_value = generate_char_value(randomize_int_number(-1, 10))
-        date_value = generate_date_value(dates, randomize_int_number(0, len(dates)))
-        insert_data_in_db(i, db, load_date, _id, int_value, float_value, char_value, date_value)
+        result_data_list = [generate_load_date(dates, randomize_int_number(0, len(dates))), _id,
+                            generate_int_value(_id, randomize_int_number(-1, 10000)),
+                            generate_float_value(randomize_float_number()),
+                            generate_char_value(randomize_int_number(-1, 10)),
+                            generate_date_value(dates, randomize_int_number(0, len(dates)))]
+        insert_data_in_db(i, db, result_data_list)
     db.commit()
 
 
@@ -226,7 +222,7 @@ def main(args):
     :param args: Arguments from command string
     """
     with DbManager(sqlite3, args.output) as db:
-        create_db(db)
+        create_table(db)
         generate_data_and_insert_in_db(args, generate_datelist(datetime.datetime.now().date()), db)
 
 

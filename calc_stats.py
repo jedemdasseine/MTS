@@ -2,10 +2,9 @@
 
 import datetime
 import sqlite3
-from argparse import ArgumentParser
-
 import common
 from db_api import DbManager
+from argparse import ArgumentParser
 
 
 def populate_argparser(argparser):
@@ -191,7 +190,11 @@ def get_and_parse_data_from_db(db):
         int_sum = calculate_sum_of_int_values(int_sum, res[2])
         float_sum = calculate_sum_of_float_values(float_sum, res[3])
         count = calculate_count(count)
-    return [equal_id_int, count, null_count_float, zero_count_float, int_sum, float_sum]
+
+    # Calculate average value
+    int_avg = calculate_average_int(count, int_sum)
+    float_avg = calculate_average_float(count, float_sum)
+    return [equal_id_int, count, null_count_float, zero_count_float, int_avg, float_avg]
 
 
 def insert_data_in_result_db(db, result_data_list):
@@ -205,9 +208,8 @@ def insert_data_in_result_db(db, result_data_list):
                format(common.CHECK_STATUS_TABLE, common.COT_NON_UNIQUE_COL, common.COT_TOTAL_COUNT_COL,
                       common.COT_NULL_COUNT_COL, common.COT_ZERO_COUNT_COL, common.COT_AVERAGE_INT_COL,
                       common.COT_AVERAGE_FLOAT_COL),
-               (result_data_list[0], result_data_list[1], result_data_list[2], result_data_list[3],
-                calculate_average_int(result_data_list[1], result_data_list[4]),
-                calculate_average_float(result_data_list[1], result_data_list[5])))
+               (result_data_list[0], result_data_list[1], result_data_list[2],
+                result_data_list[3], result_data_list[4], result_data_list[5]))
     db.commit()
 
 
