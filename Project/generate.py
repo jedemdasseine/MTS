@@ -4,9 +4,10 @@ import datetime
 import random
 import sqlite3
 import string
-import common
-from db_api import DbManager
 from argparse import ArgumentParser
+
+from Project import common
+from Project.db_api import DbManager
 
 
 def populate_argparser(argparser):

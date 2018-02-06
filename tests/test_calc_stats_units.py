@@ -1,6 +1,6 @@
 import datetime
 
-import calc_stats
+from Project import calc_stats
 
 
 class TestCalculateNullCountFloat:
@@ -24,8 +24,7 @@ class TestCalculateNullCountFloat:
                                                       None, datetime.date(2018, 2, 1)) == 6)
 
     def test_calculate_null_count_float_date_value(self):
-        assert (calc_stats.calculate_null_count_float(5, datetime.date(2018, 2, 1), 1, 2, 0.5,
-                                                      "JIJIJ", None) == 6)
+        assert (calc_stats.calculate_null_count_float(5, datetime.date(2018, 2, 1), 1, 2, 0.5, "JIJIJ", None) == 6)
 
     def test_calculate_no_null_count_float(self):
         assert (calc_stats.calculate_null_count_float(5, datetime.date(2018, 2, 1), 1, 2, 0.5,

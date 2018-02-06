@@ -1,5 +1,6 @@
 import datetime
-import generate
+
+from Project import generate
 
 dates = [datetime.date(2018, 2, 5), datetime.date(2018, 2, 4), datetime.date(2018, 2, 3), datetime.date(2018, 2, 2),
          datetime.date(2018, 2, 1)]
@@ -7,13 +8,13 @@ dates = [datetime.date(2018, 2, 5), datetime.date(2018, 2, 4), datetime.date(201
 
 class TestGenerateDatelist:
 
-    def test_generate_datelist_positive(self):
+    def test_generate_datelist(self):
         assert (generate.generate_datelist(datetime.date(2018, 2, 5)) == dates)
 
 
 class TestGenerateLoadDate:
 
-    def test_generate_load_date_positive_none_value(self):
+    def test_generate_load_date_none_value(self):
         assert (generate.generate_load_date(dates, len(dates)) is None)
 
     def test_generate_load_date_positive(self):
@@ -22,7 +23,7 @@ class TestGenerateLoadDate:
 
 class TestGenerateID:
 
-    def test_generate_id_positive_none_value(self):
+    def test_generate_id_none_value(self):
         assert (generate.generate_id(50) is None)
 
     def test_generate_id_positive_id(self):
@@ -31,37 +32,37 @@ class TestGenerateID:
 
 class TestGenerateIntValue:
 
-    def test_generate_int_value_positive_zero_value(self):
+    def test_generate_int_value_zero_value(self):
         assert (generate.generate_int_value(196, 0) == 0)
 
-    def test_generate_int_value_positive_none_value(self):
+    def test_generate_int_value_none_value(self):
         assert (generate.generate_int_value(196, 80) is None)
 
-    def test_generate_int_value_positive_equal_id(self):
+    def test_generate_int_value_equal_id(self):
         assert (generate.generate_int_value(196, 157) == 196)
 
-    def test_generate_int_value_positive_equal_iter(self):
+    def test_generate_int_value_equal_iter(self):
         assert (generate.generate_int_value(196, 255) == 255)
 
 
 class TestGenerateCharValue:
 
-    def test_generate_char_positive_none_value(self):
+    def test_generate_char_none_value(self):
         assert (generate.generate_char_value(-1) is None)
 
-    def test_generate_char_positive(self):
+    def test_generate_char(self):
         assert (len(generate.generate_char_value(5)) == 5)
 
-    def test_generate_char_type_positive(self):
+    def test_generate_char_type(self):
         assert isinstance(generate.generate_char_value(5), str)
 
 
 class TestGenerateDateValue:
 
-    def test_generate_date_value_positive_none_value(self):
+    def test_generate_date_value_none_value(self):
         assert (generate.generate_date_value(dates, len(dates)) is None)
 
-    def test_generate_date_value_positive(self):
+    def test_generate_date_value(self):
         assert (generate.generate_date_value(dates, 3) == datetime.date(2018, 2, 2))
 
 
@@ -72,5 +73,6 @@ class TestRandomiseIntNumber:
 
 
 class TestRandomiseFloatNumber:
+
     def test_generate_random_float_number_type(self):
         assert isinstance(generate.randomize_float_number(), float)
